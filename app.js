@@ -91,3 +91,38 @@
     nameEls.forEach(function (el) { if (n) el.textContent = n + ', y'; });
   }
 })();
+
+// ===== Holiday theme: string lights + snow =====
+(function () {
+  var colors = ['#ff4d4d', '#ffd84d', '#3ecf6e', '#4da6ff', '#ffd84d'];
+  var bar = document.createElement('div'); bar.className = 'lights'; bar.setAttribute('aria-hidden', 'true');
+  var n = Math.max(14, Math.round(window.innerWidth / 34));
+  for (var i = 0; i < n; i++) {
+    var b = document.createElement('span');
+    b.style.setProperty('--c', colors[i % colors.length]);
+    b.style.setProperty('--d', (Math.random() * 2.4).toFixed(2) + 's');
+    bar.appendChild(b);
+  }
+  var top = document.querySelector('.topbar');
+  if (top) top.insertAdjacentElement('afterend', bar); else document.body.insertBefore(bar, document.body.firstChild);
+
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var c = document.createElement('canvas'); c.id = 'snow'; c.setAttribute('aria-hidden', 'true');
+  document.body.appendChild(c);
+  var ctx = c.getContext('2d'), W, H, flakes = [];
+  function size() { W = c.width = window.innerWidth; H = c.height = window.innerHeight; }
+  size(); window.addEventListener('resize', size);
+  var count = window.innerWidth < 600 ? 35 : 70;
+  for (var j = 0; j < count; j++) flakes.push({ x: Math.random() * W, y: Math.random() * H, r: Math.random() * 2.2 + .6, s: Math.random() * .6 + .25, w: Math.random() * Math.PI * 2 });
+  (function loop() {
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = 'rgba(255,255,255,.75)';
+    for (var k = 0; k < flakes.length; k++) {
+      var f = flakes[k];
+      f.y += f.s; f.w += .01; f.x += Math.sin(f.w) * .3;
+      if (f.y > H + 5) { f.y = -5; f.x = Math.random() * W; }
+      ctx.beginPath(); ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2); ctx.fill();
+    }
+    requestAnimationFrame(loop);
+  })();
+})();
