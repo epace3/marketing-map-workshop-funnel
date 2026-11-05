@@ -112,15 +112,18 @@
   var ctx = c.getContext('2d'), W, H, flakes = [];
   function size() { W = c.width = window.innerWidth; H = c.height = window.innerHeight; }
   size(); window.addEventListener('resize', size);
-  var count = window.innerWidth < 600 ? 35 : 70;
-  for (var j = 0; j < count; j++) flakes.push({ x: Math.random() * W, y: Math.random() * H, r: Math.random() * 2.2 + .6, s: Math.random() * .6 + .25, w: Math.random() * Math.PI * 2 });
+  // Keep snow in the side gutters, away from the headline and copy
+  function gutter() { return W >= 900 ? Math.max(60, (W - 820) / 2) : 26; }
+  function spawnX() { var g = gutter(); return Math.random() < .5 ? Math.random() * g : W - Math.random() * g; }
+  var count = window.innerWidth < 600 ? 12 : 36;
+  for (var j = 0; j < count; j++) { var x0 = spawnX(); flakes.push({ x: x0, b: x0, y: Math.random() * H, r: Math.random() * 2 + .6, s: Math.random() * .5 + .2, w: Math.random() * Math.PI * 2 }); }
   (function loop() {
     ctx.clearRect(0, 0, W, H);
-    ctx.fillStyle = 'rgba(255,255,255,.75)';
+    ctx.fillStyle = 'rgba(255,255,255,.6)';
     for (var k = 0; k < flakes.length; k++) {
       var f = flakes[k];
-      f.y += f.s; f.w += .01; f.x += Math.sin(f.w) * .3;
-      if (f.y > H + 5) { f.y = -5; f.x = Math.random() * W; }
+      f.y += f.s; f.w += .01; f.x = f.b + Math.sin(f.w) * 8;
+      if (f.y > H + 5) { f.y = -5; f.b = spawnX(); }
       ctx.beginPath(); ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2); ctx.fill();
     }
     requestAnimationFrame(loop);

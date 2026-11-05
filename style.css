@@ -235,3 +235,10 @@ section h2::after{content:"\2745";display:block;color:var(--gold);font-size:18px
   .lights span,.btn::after,.dot{animation:none}
   #snow{display:none}
 }
+
+/* Eyebrow above the headline (replaces the top banner on the registration page) */
+.eyebrow{display:table;margin:0 auto 18px;padding:8px 16px;border:1px solid rgba(255,216,77,.45);border-radius:999px;background:rgba(255,216,77,.08);
+  font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#fff;text-align:center}
+.eyebrow .sep{color:var(--gold);margin:0 6px}
+.eyebrow span[data-mm]{color:var(--gold);text-transform:none;letter-spacing:.02em;font-weight:700}
+@media (max-width:480px){.eyebrow{font-size:11px;padding:7px 14px;border-radius:14px}.eyebrow .sep{display:none}.eyebrow span[data-mm]{display:block;margin-top:3px}}
