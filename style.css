@@ -242,3 +242,10 @@ section h2::after{content:"\2745";display:block;color:var(--gold);font-size:18px
 .eyebrow .sep{color:var(--gold);margin:0 6px}
 .eyebrow span[data-mm]{color:var(--gold);text-transform:none;letter-spacing:.02em;font-weight:700}
 @media (max-width:480px){.eyebrow{font-size:11px;padding:7px 14px;border-radius:14px}.eyebrow .sep{display:none}.eyebrow span[data-mm]{display:block;margin-top:3px}}
+
+/* Two-step registration form */
+[hidden]{display:none!important}
+.progress span{transition:width .3s ease}
+.card .consent{display:flex;gap:10px;align-items:flex-start;font-weight:400;font-size:13px;line-height:1.45;color:#555;margin:14px 0 6px;cursor:pointer}
+.card .consent input{width:20px;height:20px;flex:0 0 20px;margin:1px 0 0;padding:0;accent-color:#c9a227}
+.card .back{display:block;margin:10px auto 0;background:none;border:0;color:#888;font-size:14px;text-decoration:underline;cursor:pointer;font-family:inherit}

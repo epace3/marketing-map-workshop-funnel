@@ -64,22 +64,39 @@
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') modal.classList.remove('open'); });
 
     var form = modal.querySelector('form');
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      var err = form.querySelector('.err'); err.textContent = '';
+    var err = form.querySelector('.err');
+    var s1 = form.querySelector('[data-step="1"]'), s2 = form.querySelector('[data-step="2"]');
+    var bar = modal.querySelector('.progress span');
+    function show(n) {
+      s1.hidden = n !== 1; s2.hidden = n !== 2; err.textContent = '';
+      if (bar) bar.style.width = n === 1 ? '50%' : '100%';
+      var f = (n === 1 ? s1 : s2).querySelector('input:not([type="checkbox"])'); if (f) f.focus();
+    }
+    function goNext() {
       var data = new FormData(form);
       var email = (data.get('email') || '').trim();
-      if (!data.get('first_name') || !/^\S+@\S+\.\S+$/.test(email)) { err.textContent = 'Please add your first name and a valid email.'; return; }
+      if (!(data.get('first_name') || '').trim() || !/^\S+@\S+\.\S+$/.test(email)) { err.textContent = 'Please add your first name and a valid email.'; return; }
+      try { sessionStorage.setItem('mm_name', data.get('first_name')); } catch (x) {}
+      show(2);
+    }
+    form.querySelector('[data-next]').addEventListener('click', goNext);
+    form.querySelector('[data-back]').addEventListener('click', function () { show(1); });
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (!s1.hidden) { goNext(); return; }
+      var data = new FormData(form);
+      if ((data.get('phone') || '').replace(/\D/g, '').length < 10) { err.textContent = 'Please add a valid mobile number.'; return; }
+      if (!data.get('sms_consent')) { err.textContent = 'Please tick the box so we can send your reminders.'; return; }
+      err.textContent = '';
       var btn = form.querySelector('button[type="submit"] .main'); btn.textContent = 'Saving your seat...';
 
       var body = new URLSearchParams(data).toString();
       var jobs = [fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body })];
       if (C.ghlWebhookUrl) {
-        var payload = {}; data.forEach(function (v, k) { payload[k] = v; });
+        var payload = {}; data.forEach(function (v, k) { if (k !== 'bot-field' && k !== 'form-name') payload[k] = v; });
         payload.event = C.dateLong; payload.source = 'marketing-map-registration';
         jobs.push(fetch(C.ghlWebhookUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }));
       }
-      try { sessionStorage.setItem('mm_name', data.get('first_name')); } catch (x) {}
       Promise.allSettled(jobs).then(function () { window.location.href = '/vip'; });
     });
   }

@@ -130,16 +130,23 @@
     <div class="progress"><span></span></div>
     <h3 id="regTitle">You're Almost In!</h3>
     <p class="note">Enter your details to grab your free seat for <b data-mm="dateLong">Wednesday, November 25</b>.</p>
-    <form name="marketing-map-registration" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+    <form name="marketing-map-registration" method="POST" data-netlify="true" netlify-honeypot="bot-field" novalidate>
       <input type="hidden" name="form-name" value="marketing-map-registration">
       <p style="display:none"><label>Leave blank <input name="bot-field"></label></p>
-      <label for="fn">First Name</label>
-      <input id="fn" name="first_name" autocomplete="given-name" required>
-      <label for="em">Email</label>
-      <input id="em" name="email" type="email" autocomplete="email" required>
-      <label for="ph">Phone (for a text reminder)</label>
-      <input id="ph" name="phone" type="tel" autocomplete="tel">
-      <button type="submit" class="btn"><span class="main">Reserve My Free Seat</span><span class="small">Live on Zoom | 100% free</span></button>
+      <div class="step" data-step="1">
+        <label for="fn">First Name</label>
+        <input id="fn" name="first_name" autocomplete="given-name" required>
+        <label for="em">Email</label>
+        <input id="em" name="email" type="email" inputmode="email" autocomplete="email" required>
+        <button type="button" class="btn" data-next><span class="main">Continue</span><span class="small">Step 1 of 2</span></button>
+      </div>
+      <div class="step" data-step="2" hidden>
+        <label for="ph">Mobile Phone (for your text reminder)</label>
+        <input id="ph" name="phone" type="tel" inputmode="tel" autocomplete="tel" required>
+        <label class="consent"><input type="checkbox" name="sms_consent" value="yes" required><span>Yes, send me event reminders and updates from SalesGenius by text and email. Msg &amp; data rates may apply. Msg frequency varies. Reply STOP to opt out, HELP for help.</span></label>
+        <button type="submit" class="btn"><span class="main">Reserve My Free Seat</span><span class="small">Step 2 of 2 | Live on Zoom | 100% free</span></button>
+        <button type="button" class="back" data-back>Back</button>
+      </div>
       <div class="err" aria-live="polite"></div>
       <p class="fine">We'll send your Zoom link and reminders. Unsubscribe anytime.</p>
     </form>
