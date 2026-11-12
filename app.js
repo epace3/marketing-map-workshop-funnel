@@ -46,7 +46,7 @@
     var l = calLinks(
       vip ? '2027 Marketing Map Workshop + VIP Implementation Session' : '2027 Marketing Map Workshop (Live)',
       C.startISO, vip ? (C.vipEndISO || C.endISO) : C.endISO,
-      'Your Zoom link is in your confirmation email. Questions: info@salesgenius.co'
+      (C.zoomUrl ? 'Join on Zoom: ' + C.zoomUrl + ' . ' : 'Your Zoom link is in your confirmation email. ') + 'Questions: info@salesgenius.co'
     );
     wrap.querySelector('[data-c="google"]').href = l.google;
     wrap.querySelector('[data-c="outlook"]').href = l.outlook;
