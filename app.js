@@ -95,7 +95,7 @@
       if (C.ghlWebhookUrl) {
         var payload = {}; data.forEach(function (v, k) { if (k !== 'bot-field' && k !== 'form-name') payload[k] = v; });
         payload.event = C.dateLong; payload.event_start = C.startISO; payload.run = C.runId; payload.source = 'marketing-map-registration';
-        jobs.push(fetch(C.ghlWebhookUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }));
+        jobs.push(fetch(C.ghlWebhookUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }));
       }
       Promise.allSettled(jobs).then(function () { window.location.href = '/vip'; });
     });
